@@ -23,27 +23,33 @@ player_type = st.sidebar.selectbox("Select Player Type", ("Aggressive", "Balance
 
 # Set default stats based on player type
 if player_type == "Aggressive":
-    default_stats = {"kills":10, "damageDealt":1200, "walkDistance":2000, "rideDistance":800, "swimDistance":100, "heals":5, "boosts":3, "headshotKills":5, "killPlace":10, "numGroups":50, "maxPlace":50, "weaponsAcquired":10, "longestKill":250, "DBNOs":3}
+    default_stats = {"kills":10, "damageDealt":1200, "walkDistance":2000, "rideDistance":800, "swimDistance":100,
+                     "heals":5, "boosts":3, "headshotKills":5, "killPlace":10, "numGroups":50, "maxPlace":50,
+                     "weaponsAcquired":10, "longestKill":250, "DBNOs":3}
 elif player_type == "Balanced":
-    default_stats = {"kills":5, "damageDealt":600, "walkDistance":1500, "rideDistance":500, "swimDistance":50, "heals":4, "boosts":2, "headshotKills":2, "killPlace":25, "numGroups":50, "maxPlace":50, "weaponsAcquired":8, "longestKill":150, "DBNOs":2}
+    default_stats = {"kills":5, "damageDealt":600, "walkDistance":1500, "rideDistance":500, "swimDistance":50,
+                     "heals":4, "boosts":2, "headshotKills":2, "killPlace":25, "numGroups":50, "maxPlace":50,
+                     "weaponsAcquired":8, "longestKill":150, "DBNOs":2}
 else:  # Passive
-    default_stats = {"kills":1, "damageDealt":200, "walkDistance":1000, "rideDistance":300, "swimDistance":20, "heals":2, "boosts":1, "headshotKills":0, "killPlace":50, "numGroups":50, "maxPlace":50, "weaponsAcquired":5, "longestKill":50, "DBNOs":0}
+    default_stats = {"kills":1, "damageDealt":200, "walkDistance":1000, "rideDistance":300, "swimDistance":20,
+                     "heals":2, "boosts":1, "headshotKills":0, "killPlace":50, "numGroups":50, "maxPlace":50,
+                     "weaponsAcquired":5, "longestKill":50, "DBNOs":0}
 
-# Input sliders
-kills = st.sidebar.slider("Kills", 0, 30, default_stats["kills"])
-damageDealt = st.sidebar.slider("Damage Dealt", 0, 3000, default_stats["damageDealt"])
-walkDistance = st.sidebar.slider("Walk Distance", 0.0, 5000.0, default_stats["walkDistance"])
-rideDistance = st.sidebar.slider("Ride Distance", 0.0, 5000.0, default_stats["rideDistance"])
-swimDistance = st.sidebar.slider("Swim Distance", 0.0, 1000.0, default_stats["swimDistance"])
-heals = st.sidebar.slider("Heals", 0, 20, default_stats["heals"])
-boosts = st.sidebar.slider("Boosts", 0, 10, default_stats["boosts"])
-headshotKills = st.sidebar.slider("Headshot Kills", 0, 20, default_stats["headshotKills"])
-killPlace = st.sidebar.slider("Kill Place", 1, 100, default_stats["killPlace"])
-numGroups = st.sidebar.slider("Number of Groups", 1, 100, default_stats["numGroups"])
-maxPlace = st.sidebar.slider("Max Place in Match", 1, 100, default_stats["maxPlace"])
-weaponsAcquired = st.sidebar.slider("Weapons Acquired", 0, 50, default_stats["weaponsAcquired"])
-longestKill = st.sidebar.slider("Longest Kill", 0.0, 1000.0, default_stats["longestKill"])
-DBNOs = st.sidebar.slider("DBNOs", 0, 20, default_stats["DBNOs"])
+# Input sliders (ensure float/int consistency)
+kills = st.sidebar.slider("Kills", 0, 30, int(default_stats["kills"]))
+damageDealt = st.sidebar.slider("Damage Dealt", 0, 3000, int(default_stats["damageDealt"]))
+walkDistance = st.sidebar.slider("Walk Distance", 0.0, 5000.0, float(default_stats["walkDistance"]))
+rideDistance = st.sidebar.slider("Ride Distance", 0.0, 5000.0, float(default_stats["rideDistance"]))
+swimDistance = st.sidebar.slider("Swim Distance", 0.0, 1000.0, float(default_stats["swimDistance"]))
+heals = st.sidebar.slider("Heals", 0, 20, int(default_stats["heals"]))
+boosts = st.sidebar.slider("Boosts", 0, 10, int(default_stats["boosts"]))
+headshotKills = st.sidebar.slider("Headshot Kills", 0, 20, int(default_stats["headshotKills"]))
+killPlace = st.sidebar.slider("Kill Place", 1, 100, int(default_stats["killPlace"]))
+numGroups = st.sidebar.slider("Number of Groups", 1, 100, int(default_stats["numGroups"]))
+maxPlace = st.sidebar.slider("Max Place in Match", 1, 100, int(default_stats["maxPlace"]))
+weaponsAcquired = st.sidebar.slider("Weapons Acquired", 0, 50, int(default_stats["weaponsAcquired"]))
+longestKill = st.sidebar.slider("Longest Kill", 0.0, 1000.0, float(default_stats["longestKill"]))
+DBNOs = st.sidebar.slider("DBNOs", 0, 20, int(default_stats["DBNOs"]))
 
 # Feature engineering
 totalDistance = walkDistance + rideDistance + swimDistance
