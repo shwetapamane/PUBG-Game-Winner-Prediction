@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 from xgboost import XGBRegressor
 
 # ---------------------------
-# Load Baseline XGBoost Model
+# Load Trained XGBoost Model
 # ---------------------------
 xgb = XGBRegressor()
-xgb.load_model("xgboost_pubg_baseline.json")  # Load pre-trained model
+xgb.load_model("xgboost_pubg_baseline.json")  # Load pre-trained JSON model
 
 # ---------------------------
 # Streamlit App Interface
@@ -35,7 +35,7 @@ else:  # Passive
                      "heals":2, "boosts":1, "headshotKills":0, "killPlace":50, "numGroups":50, "maxPlace":50,
                      "weaponsAcquired":5, "longestKill":50, "DBNOs":0}
 
-# Input sliders (ensure float/int consistency)
+# Input sliders
 kills = st.sidebar.slider("Kills", 0, 30, int(default_stats["kills"]))
 damageDealt = st.sidebar.slider("Damage Dealt", 0, 3000, int(default_stats["damageDealt"]))
 walkDistance = st.sidebar.slider("Walk Distance", 0.0, 5000.0, float(default_stats["walkDistance"]))
@@ -86,15 +86,18 @@ if st.button("Predict Win Probability"):
 st.markdown("---")
 st.subheader("Feature Importance (XGBoost)")
 
-# Extract feature importance
-importance = xgb.feature_importances_
-features = input_df.columns
-feat_imp_df = pd.DataFrame({"Feature": features, "Importance": importance}).sort_values(by="Importance", ascending=False)
+# Extract feature importance safely
+importance_dict = xgb.get_booster().get_score(importance_type='weight')
+feat_imp_df = pd.DataFrame({
+    "Feature": list(importance_dict.keys()),
+    "Importance": list(importance_dict.values())
+}).sort_values(by="Importance", ascending=False)
 
 # Plot
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(8,6))
 ax.barh(feat_imp_df["Feature"], feat_imp_df["Importance"])
 ax.invert_yaxis()
 st.pyplot(fig)
 
 st.write("**Instructions:** Adjust the sliders in the sidebar to input player stats, select player type for defaults, then click 'Predict Win Probability'.")
+
