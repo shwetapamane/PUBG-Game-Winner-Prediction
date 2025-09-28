@@ -1,14 +1,14 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import joblib
 import matplotlib.pyplot as plt
 from xgboost import XGBRegressor
 
 # ---------------------------
 # Load Baseline XGBoost Model
 # ---------------------------
-model = joblib.load('xgboost_pubg_baseline.pkl')
+xgb = XGBRegressor()
+xgb.load_model("xgboost_pubg_baseline.json")  # Load pre-trained model
 
 # ---------------------------
 # Streamlit App Interface
@@ -77,7 +77,7 @@ input_df = pd.DataFrame({
 
 # Prediction
 if st.button("Predict Win Probability"):
-    prediction = model.predict(input_df)[0]
+    prediction = xgb.predict(input_df)[0]
     st.success(f"Predicted Win Probability (winPlacePerc): {prediction:.3f}")
 
 # ---------------------------
@@ -87,7 +87,7 @@ st.markdown("---")
 st.subheader("Feature Importance (XGBoost)")
 
 # Extract feature importance
-importance = model.feature_importances_
+importance = xgb.feature_importances_
 features = input_df.columns
 feat_imp_df = pd.DataFrame({"Feature": features, "Importance": importance}).sort_values(by="Importance", ascending=False)
 
